@@ -25,15 +25,19 @@ class BottomNavigator extends StatelessWidget {
       onTap: (int value) {
         switch (value) {
           case 0:
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
             break;
           case 1:
-            Navigator.pushNamed(context, '/sample');
+            _pushNamedAndRemoveUntilHome(context, '/sample');
             break;
           case 2:
-            Navigator.pushNamed(context, '/camera');
+            _pushNamedAndRemoveUntilHome(context, '/camera');
         }
       },
     );
+  }
+
+  void _pushNamedAndRemoveUntilHome(BuildContext context, String name) {
+    Navigator.pushNamedAndRemoveUntil(context, name, ModalRoute.withName("/"));
   }
 }
