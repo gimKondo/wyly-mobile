@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:wyly/screen/sample_screen.dart';
+import 'package:camera/camera.dart';
 
 import './screen/top_screen.dart';
 import './screen/camera_screen.dart';
+import './screen/sample_screen.dart';
 
-void main() => runApp(MyApp());
+List<CameraDescription> cameras;
+
+Future<void> main() async {
+  // Ensure that plugin services are initialized so that `availableCameras()`
+  // can be called before `runApp()`
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -28,7 +37,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => TopScreen(),
         '/sample': (context) => SampleScreen(title: 'Sample'),
-        '/camera': (context) => CameraScreen(),
+        '/camera': (context) => CameraScreen(
+              camera: cameras[0],
+            ),
       },
     );
   }
