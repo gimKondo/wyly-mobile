@@ -1,0 +1,26 @@
+name: Test
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1.1.1
+        with:
+          flutter-version: "1.12.13+hotfix.5"
+      - run: flutter pub get
+      - run: flutter test
+      - name: Notify success to Slack
+        if: success()
+        run: ./.github/scripts/notify-slack.sh
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_MESSAGE: Pass tests
+      - name: Notify failure to Slack
+        if: failure()
+        run: ./.github/scripts/notify-slack.sh
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_MESSAGE: Fail tests
