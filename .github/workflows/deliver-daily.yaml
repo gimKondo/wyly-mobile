@@ -1,0 +1,28 @@
+name: Daily Delivery Android
+
+on: push
+# on:
+# schedule:
+# - cron: 0 16 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+      - uses: subosito/flutter-action@v1.1.1
+        with:
+          flutter-version: "1.12.13+hotfix.5"
+      - run: flutter pub get
+      - run: flutter build apk --debug -t lib/main.dart --build-name="daily build $(date +'%Y-%m-%d %H:%M')"
+      - name: Deploy to DeployGate
+        run: ./.github/scripts/deploy-android.sh
+        env:
+          DEPLOYGATE_API_KEY: ${{ secrets.DEPLOYGATE_API_KEY }}
+      - name: Notify to Slack
+        run: ./.github/scripts/notify-slack.sh
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_MESSAGE: Delivered daily build
