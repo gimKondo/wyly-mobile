@@ -90,9 +90,9 @@ class CameraScreenState extends State<CameraScreen> {
             await _controller.takePicture(path);
 
             // If the picture was taken, display it on a new screen.
-            Navigator.push(
+            await Navigator.push<dynamic>(
               context,
-              MaterialPageRoute(
+              MaterialPageRoute<dynamic>(
                 builder: (context) => DisplayPictureScreen(imagePath: path),
               ),
             );
