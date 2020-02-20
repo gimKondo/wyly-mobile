@@ -1,8 +1,9 @@
 name: Daily Delivery Android
 
 on:
-  schedule:
-    - cron: 0 0 * * * # 9:00 JST
+  push:
+    branches:
+      - master
 
 jobs:
   build:
