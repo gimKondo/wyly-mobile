@@ -1,4 +1,4 @@
-name: Daily Delivery Android
+name: Deliver Android App
 
 on:
   push:
