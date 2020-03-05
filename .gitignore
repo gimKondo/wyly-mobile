@@ -38,3 +38,6 @@ lib/generated_plugin_registrant.dart
 
 # Golden test diff
 /test/golden/failures
+
+# Firebase conf
+google-services.json
