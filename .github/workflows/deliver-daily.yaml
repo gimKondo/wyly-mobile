@@ -22,8 +22,16 @@ jobs:
         run: ./.github/scripts/deploy-android.sh
         env:
           DEPLOYGATE_API_KEY: ${{ secrets.DEPLOYGATE_API_KEY }}
-      - name: Notify to Slack
-        run: ./.github/scripts/notify-slack.sh
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_MESSAGE: Delivered daily build
+      - name: Slack Notification
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          job_name: "Deliver to DeployGate"
+          mention: "here"
+          mention_if: "failure"
+          channel: "#wyly-github"
+          icon_emoji: "github"
+          url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          commit: true
+          token: ${{ secrets.GITHUB_TOKEN }}
