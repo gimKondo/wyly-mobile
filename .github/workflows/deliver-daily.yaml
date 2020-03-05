@@ -13,6 +13,8 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
+      - name: "setup application config"
+        run: cp ./.github/config/google-services-dev.json ./android/app/google-services.json
       - uses: subosito/flutter-action@v1.1.1
         with:
           flutter-version: "1.12.13+hotfix.5"

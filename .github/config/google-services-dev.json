@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "547043750571",
+    "firebase_url": "https://wyly-proto.firebaseio.com",
+    "project_id": "wyly-proto",
+    "storage_bucket": "wyly-proto.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547043750571:android:02f8c7fbf6cbb52d8d3dee",
+        "android_client_info": {
+          "package_name": "com.example.wyly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547043750571-0r1060fj1bcibc3ilrhko0dif6sentml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFYkwIIfdiIBQpp3W_rFQqvb3zvFigYoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547043750571-0r1060fj1bcibc3ilrhko0dif6sentml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
