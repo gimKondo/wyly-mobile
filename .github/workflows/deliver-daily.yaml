@@ -17,7 +17,7 @@ jobs:
         with:
           flutter-version: "1.12.13+hotfix.5"
       - run: flutter pub get
-      - run: flutter build apk --debug -t lib/main.dart --build-name="daily build $(date +'%Y-%m-%d %H:%M')"
+      - run: flutter build apk --debug -t lib/main.dart --build-name="latest build $(date +'%Y-%m-%d %H:%M')"
       - name: Deploy to DeployGate
         run: ./.github/scripts/deploy-android.sh
         env:
