@@ -13,15 +13,16 @@ jobs:
       - run: flutter pub get
       - run: flutter test
       - run: flutter analyze
-      - name: Notify success to Slack
-        if: success()
-        run: ./.github/scripts/notify-slack.sh
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_MESSAGE: Pass tests
-      - name: Notify failure to Slack
-        if: failure()
-        run: ./.github/scripts/notify-slack.sh
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_MESSAGE: Fail tests
+      - name: Slack Notification
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          job_name: "flutter test"
+          mention: "here"
+          mention_if: "failure"
+          channel: "#wyly-github"
+          icon_emoji: "github"
+          url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          commit: true
+          token: ${{ secrets.GITHUB_TOKEN }}
