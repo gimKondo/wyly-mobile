@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
-import './screen/top_screen.dart';
+import './screen/splash_screen.dart';
+import './screen/home_screen.dart';
 import './screen/camera_screen.dart';
 import './screen/sample_screen.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => TopScreen(),
+        '/': (context) => SplashScreen(),
+        '/home': (context) => HomeScreen(),
         '/sample': (context) => SampleScreen(title: 'Sample'),
         '/camera': (context) => CameraScreen(
               camera: cameras[0],
