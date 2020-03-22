@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../widget/bottom_navigator.dart';
 
-class TopScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
