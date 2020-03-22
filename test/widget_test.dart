@@ -12,7 +12,7 @@ import 'package:wyly/screen/sample_screen.dart';
 import './helper.dart' as helper;
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Counter increments smoke test', (tester) async {
     // Build our app and trigger a frame.
     await tester
         .pumpWidget(helper.buildTestableWidget(SampleScreen(title: 'test')));

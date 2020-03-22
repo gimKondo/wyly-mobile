@@ -22,7 +22,7 @@ class BottomNavigator extends StatelessWidget {
           icon: Icon(Icons.camera),
         ),
       ],
-      onTap: (int value) {
+      onTap: (value) {
         switch (value) {
           case 0:
             Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
