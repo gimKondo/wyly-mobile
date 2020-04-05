@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../service/auth_service.dart';
 import '../service/ui_service.dart';
 import '../service/validate_service.dart';
 
@@ -193,7 +194,7 @@ class _LoginButton extends StatefulWidget {
       // ログイン処理を実行する
       showIndicator(context);
       try {
-        // TODO: ログイン処理
+        await AuthService().loginByEmailAndPass(email, password);
       } on Exception {
         //  ネットワーク未接続など、APIにアクセス出来ない場合は汎用エラーを出して完了
         Navigator.of(context).pop();
@@ -310,6 +311,7 @@ class _EmailFormState extends State<_EmailForm> {
 
   void _onTextFormFieldChanged() {
     widget.formKey.currentState.validate();
+    debugPrint("email is changed");
     Provider.of<_LoginFieldStatus>(context, listen: false).email =
         _controller.text;
   }
