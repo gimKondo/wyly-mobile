@@ -177,11 +177,12 @@ class _LoginButton extends StatefulWidget {
     await pref.setString('email', '');
   }
 
-  Future<void> _onLoginButtonPressed(BuildContext context) async {
+  Future<void> _onLoginButtonPressed(
+      BuildContext context, _LoginFieldStatus loginField) async {
     debugPrint("Login button is pressed.");
-    final email = Provider.of<_LoginFieldStatus>(context).email;
-    final password = Provider.of<_LoginFieldStatus>(context).password;
-    final canKeepEmail = Provider.of<_LoginFieldStatus>(context).canKeepEmail;
+    final email = loginField.email;
+    final password = loginField.password;
+    final canKeepEmail = loginField.canKeepEmail;
     // 現在の仕様ではバリデーションでエラーになることはない(ボタンが押せなくなるため)
     debugPrint("Login button is pushed. email:[$email]");
     if (_emailFormKey.currentState.validate() &&
@@ -231,7 +232,7 @@ class _LoginButtonState extends State<_LoginButton> {
           // validationをパスした場合のみボタンを有効化する
           return RaisedButton(
             onPressed: model.isValidAll()
-                ? () => widget._onLoginButtonPressed(context)
+                ? () => widget._onLoginButtonPressed(context, model)
                 : null, // == null のとき, ボタンは disabled
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(40.0)),
