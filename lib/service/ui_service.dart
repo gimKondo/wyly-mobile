@@ -5,8 +5,7 @@ void showIndicator(BuildContext context) {
   showDialog<void>(
     barrierDismissible: false,
     context: context,
-    builder: (BuildContext context) =>
-        Center(child: CircularProgressIndicator()),
+    builder: (context) => Center(child: CircularProgressIndicator()),
   );
 }
 
