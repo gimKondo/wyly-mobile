@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
             alignment: Alignment.center,
             margin: EdgeInsets.all(45.0),
             child: ChangeNotifierProvider(
-              create: (context) => _LoginFieldStatus(),
+              create: (context) => _LoginFieldModel(),
               child: _LoginForm(),
             ),
           ),
@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class _LoginFieldStatus extends ChangeNotifier {
+class _LoginFieldModel extends ChangeNotifier {
   bool isValidEmail = false;
   bool isValidPassword = false;
   bool canKeepEmail = true;
@@ -123,7 +123,7 @@ class _LoginFormState extends State<_LoginForm> {
             Padding(
               padding: EdgeInsets.only(left: 8.0),
             ),
-            Consumer<_LoginFieldStatus>(
+            Consumer<_LoginFieldModel>(
               builder: (context, model, child) {
                 return CupertinoSwitch(
                   onChanged: (value) {
@@ -178,7 +178,7 @@ class _LoginButton extends StatefulWidget {
   }
 
   Future<void> _onLoginButtonPressed(
-      BuildContext context, _LoginFieldStatus loginField) async {
+      BuildContext context, _LoginFieldModel loginField) async {
     debugPrint("Login button is pressed.");
     final email = loginField.email;
     final password = loginField.password;
@@ -227,7 +227,7 @@ class _LoginButtonState extends State<_LoginButton> {
       margin: EdgeInsets.only(top: 20.0),
       alignment: Alignment.center,
       height: 47,
-      child: Consumer<_LoginFieldStatus>(
+      child: Consumer<_LoginFieldModel>(
         builder: (context, model, child) {
           // validationをパスした場合のみボタンを有効化する
           return RaisedButton(
@@ -290,7 +290,7 @@ class _EmailFormState extends State<_EmailForm> {
     final email = pref.getString('email') ?? '';
     setState(() {
       _controller.text = email;
-      Provider.of<_LoginFieldStatus>(context, listen: false).email = email;
+      Provider.of<_LoginFieldModel>(context, listen: false).email = email;
       // 空白以外の初期値に対してはバリデーションを行う
       if (email != '') {
         _validateEmail(email);
@@ -305,7 +305,7 @@ class _EmailFormState extends State<_EmailForm> {
       _textColor = isValid ? Colors.black : Colors.red[500];
     });
     // バリデーション結果を通知する
-    Provider.of<_LoginFieldStatus>(context, listen: false)
+    Provider.of<_LoginFieldModel>(context, listen: false)
         .notifyEmailValidation(isValid);
     return isValid ? null : '正しいメールアドレスを入力してください';
   }
@@ -313,7 +313,7 @@ class _EmailFormState extends State<_EmailForm> {
   void _onTextFormFieldChanged() {
     widget.formKey.currentState.validate();
     debugPrint("email is changed");
-    Provider.of<_LoginFieldStatus>(context, listen: false).email =
+    Provider.of<_LoginFieldModel>(context, listen: false).email =
         _controller.text;
   }
 
@@ -381,14 +381,14 @@ class _PasswordFormState extends State<_PasswordForm> {
   String _validatePassword(String value) {
     // ひとまず空でなければOK
     final isValid = value.isNotEmpty;
-    Provider.of<_LoginFieldStatus>(context, listen: false)
+    Provider.of<_LoginFieldModel>(context, listen: false)
         .notifyPasswordValidation(isValid);
     return isValid ? null : 'パスワードを入力してください';
   }
 
   void _onTextFormFieldChanged() {
     widget.formKey.currentState.validate();
-    Provider.of<_LoginFieldStatus>(context, listen: false).password =
+    Provider.of<_LoginFieldModel>(context, listen: false).password =
         _controller.text;
   }
 
