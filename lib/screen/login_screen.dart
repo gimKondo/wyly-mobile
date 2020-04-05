@@ -77,7 +77,7 @@ class _LoginFormState extends State<_LoginForm> {
           height: 120,
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 30.0),
+          padding: EdgeInsets.only(top: 30.0),
         ),
         Text(
           'ID :',
@@ -87,13 +87,13 @@ class _LoginFormState extends State<_LoginForm> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10.0),
+          margin: EdgeInsets.only(top: 10.0),
           child: _EmailForm(
             formKey: _emailFormKey,
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 10.0),
+          padding: EdgeInsets.only(top: 10.0),
         ),
         Text(
           'PASSWORD :',
@@ -103,7 +103,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10.0),
+          margin: EdgeInsets.only(top: 10.0),
           child: _PasswordForm(
             formKey: _passwordFormKey,
           ),
@@ -138,7 +138,7 @@ class _LoginFormState extends State<_LoginForm> {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 10.0),
+          padding: EdgeInsets.only(top: 10.0),
         ),
         _LoginButton(
           emailFormKey: _emailFormKey,
@@ -176,8 +176,10 @@ class _LoginButton extends StatefulWidget {
     await pref.setString('email', '');
   }
 
-  Future<void> _onAuthMailButtonPressed(BuildContext context) async {
+  Future<void> _onLoginButtonPressed(BuildContext context) async {
+    debugPrint("Login button is pressed.");
     final email = Provider.of<_LoginFieldStatus>(context).email;
+    final password = Provider.of<_LoginFieldStatus>(context).password;
     final canKeepEmail = Provider.of<_LoginFieldStatus>(context).canKeepEmail;
     // 現在の仕様ではバリデーションでエラーになることはない(ボタンが押せなくなるため)
     debugPrint("Login button is pushed. email:[$email]");
@@ -220,7 +222,7 @@ class _LoginButtonState extends State<_LoginButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20.0),
+      margin: EdgeInsets.only(top: 20.0),
       alignment: Alignment.center,
       height: 47,
       child: Consumer<_LoginFieldStatus>(
@@ -228,7 +230,7 @@ class _LoginButtonState extends State<_LoginButton> {
           // validationをパスした場合のみボタンを有効化する
           return RaisedButton(
             onPressed: model.isValidAll()
-                ? () => widget._onAuthMailButtonPressed(context)
+                ? () => widget._onLoginButtonPressed(context)
                 : null, // == null のとき, ボタンは disabled
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(40.0)),
@@ -243,14 +245,6 @@ class _LoginButtonState extends State<_LoginButton> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Image.asset(
-                  'assets/ic_login.png',
-                  width: 20.0,
-                  height: 20.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0),
-                ),
                 Text(
                   'ログイン',
                   style: TextStyle(
@@ -284,9 +278,9 @@ class _EmailFormState extends State<_EmailForm> {
   Color _textColor = Colors.black;
 
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
-    await _loadEmail();
+    _loadEmail();
   }
 
   Future<void> _loadEmail() async {
