@@ -178,13 +178,13 @@ class _LoginButton extends StatefulWidget {
   }
 
   Future<void> _onLoginButtonPressed(
-      BuildContext context, _LoginFieldModel loginField) async {
-    debugPrint("Login button is pressed.");
+      BuildContext context, _LoginFieldModel loginField, bool isNewUser) async {
     final email = loginField.email;
     final password = loginField.password;
     final canKeepEmail = loginField.canKeepEmail;
     // 現在の仕様ではバリデーションでエラーになることはない(ボタンが押せなくなるため)
-    debugPrint("Login button is pushed. email:[$email]");
+    debugPrint(
+        "Login button is pressed. email:[$email] isNewUser:[$isNewUser]");
     if (_emailFormKey.currentState.validate() &&
         _passwordFormKey.currentState.validate()) {
       if (!canKeepEmail) {
@@ -195,11 +195,19 @@ class _LoginButton extends StatefulWidget {
       // ログイン処理を実行する
       showIndicator(context);
       try {
-        await AuthService().loginByEmailAndPass(email, password);
-      } on Exception {
+        if (isNewUser) {
+          await AuthService().signUpByEmailAndPass(email, password);
+        } else {
+          await AuthService().signInByEmailAndPass(email, password);
+        }
+      } on Exception catch (e) {
+        Navigator.of(context).pop();
+        showErrorDialog(context, "Fail to login.\n$e");
+        return;
+      } catch (e) {
         //  ネットワーク未接続など、APIにアクセス出来ない場合は汎用エラーを出して完了
         Navigator.of(context).pop();
-        showErrorDialog(context, "Fail to login");
+        showErrorDialog(context, "login error.\n$e");
         return;
       }
       Navigator.of(context).pop();
@@ -224,39 +232,48 @@ class _LoginButtonState extends State<_LoginButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20.0),
-      alignment: Alignment.center,
-      height: 47,
-      child: Consumer<_LoginFieldModel>(
-        builder: (context, model, child) {
-          // validationをパスした場合のみボタンを有効化する
-          return RaisedButton(
-            onPressed: model.isValidAll()
-                ? () => widget._onLoginButtonPressed(context, model)
-                : null, // == null のとき, ボタンは disabled
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(40.0)),
-            ),
-            color: Theme.of(context).primaryColor,
-            child: child,
-          );
-        },
-        child: Container(
-          height: 50,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'ログイン',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                  ),
+        margin: EdgeInsets.only(top: 20.0),
+        alignment: Alignment.center,
+        child: Column(children: <Widget>[
+          _buildLoginButton(false, 'ログイン', Theme.of(context).primaryColor),
+          Padding(
+            padding: EdgeInsets.only(top: 30.0),
+          ),
+          _buildLoginButton(true, '新規登録', Colors.blue),
+        ]));
+  }
+
+  // ログイン/新規登録ボタン
+  Widget _buildLoginButton(bool isNewUser, String text, Color buttonColor) {
+    return Consumer<_LoginFieldModel>(
+      builder: (context, model, child) {
+        // validationをパスした場合のみボタンを有効化する
+        return RaisedButton(
+          onPressed: model.isValidAll()
+              ? () => widget._onLoginButtonPressed(context, model, isNewUser)
+              : null, // == null のとき, ボタンは disabled
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(40.0)),
+          ),
+          color: buttonColor,
+          child: child,
+        );
+      },
+      child: Container(
+        height: 50,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
                 ),
-              ]),
-        ),
+              ),
+            ]),
       ),
     );
   }
