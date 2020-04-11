@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../service/auth_service.dart';
+
 class BottomNavigator extends StatelessWidget {
   BottomNavigator(this._index);
   final int _index;
@@ -8,6 +10,7 @@ class BottomNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: _index,
+      type: BottomNavigationBarType.fixed,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           title: Text('Home'),
@@ -21,6 +24,10 @@ class BottomNavigator extends StatelessWidget {
           title: Text('Camera'),
           icon: Icon(Icons.camera),
         ),
+        BottomNavigationBarItem(
+          title: Text('Logout'),
+          icon: Icon(Icons.power_settings_new),
+        ),
       ],
       onTap: (value) {
         switch (value) {
@@ -32,6 +39,10 @@ class BottomNavigator extends StatelessWidget {
             break;
           case 2:
             _pushNamedAndRemoveUntilHome(context, '/camera');
+            break;
+          case 3:
+            _signOut(context);
+            break;
         }
       },
     );
@@ -39,6 +50,12 @@ class BottomNavigator extends StatelessWidget {
 
   void _pushNamedAndRemoveUntilHome(BuildContext context, String name) {
     Navigator.pushNamedAndRemoveUntil(
-        context, name, ModalRoute.withName("/home"));
+        context, name, ModalRoute.withName('/home'));
+  }
+
+  void _signOut(BuildContext context) {
+    AuthService().singOut();
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/login', ModalRoute.withName('/login'));
   }
 }
