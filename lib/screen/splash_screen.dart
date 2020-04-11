@@ -9,7 +9,7 @@ class SplashScreen extends StatelessWidget {
       Future.delayed(
         Duration(milliseconds: 2000),
         () => Navigator.of(context)
-            .pushNamedAndRemoveUntil('/home', (route) => false),
+            .pushNamedAndRemoveUntil('/login', (route) => false),
       );
     });
     return Scaffold(
