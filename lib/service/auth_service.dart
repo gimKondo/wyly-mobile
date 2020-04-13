@@ -3,6 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  /// Get Firebase user if already sign in
+  Future<FirebaseUser> getFirebaseUser() async {
+    return await FirebaseAuth.instance.currentUser();
+  }
+
   /// Sign up new user by [email] address and [password]
   /// if fail to sign up, throw PlatformException
   Future<FirebaseUser> signUpByEmailAndPass(
