@@ -15,10 +15,12 @@ class _TimelineListState extends State<TimelineList> {
     return FutureBuilder(
       future: _repository.list(),
       builder:
-          (BuildContext context, AsyncSnapshot<Stream<List<Map>>> snapshot) {
+          // ignore: avoid_types_on_closure_parameters
+          (context, AsyncSnapshot<Stream<List<Map>>> snapshot) {
         if (snapshot.hasData) {
           return StreamBuilder(
               stream: snapshot.data,
+              // ignore: avoid_types_on_closure_parameters
               builder: (context, AsyncSnapshot<List<Map>> timelineSnapshot) {
                 if (timelineSnapshot.hasError) return Text('error');
                 switch (timelineSnapshot.connectionState) {
