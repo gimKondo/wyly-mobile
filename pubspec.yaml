@@ -19,6 +19,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Utility
+  intl: ^0.16.1
+
+  # Firebase
   firebase_core: ^0.4.4
   firebase_auth: ^0.15.5
   cloud_functions: ^0.4.2

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../repository/timeline_repository.dart';
+import '../model/timeline.dart';
 
 class TimelineList extends StatefulWidget {
   @override
@@ -16,12 +17,13 @@ class _TimelineListState extends State<TimelineList> {
       future: _repository.list(),
       builder:
           // ignore: avoid_types_on_closure_parameters
-          (context, AsyncSnapshot<Stream<List<Map>>> snapshot) {
+          (context, AsyncSnapshot<Stream<List<Timeline>>> snapshot) {
         if (snapshot.hasData) {
           return StreamBuilder(
               stream: snapshot.data,
-              // ignore: avoid_types_on_closure_parameters
-              builder: (context, AsyncSnapshot<List<Map>> timelineSnapshot) {
+              builder:
+                  // ignore: avoid_types_on_closure_parameters
+                  (context, AsyncSnapshot<List<Timeline>> timelineSnapshot) {
                 if (timelineSnapshot.hasError) return Text('error');
                 switch (timelineSnapshot.connectionState) {
                   case ConnectionState.none:
@@ -39,7 +41,7 @@ class _TimelineListState extends State<TimelineList> {
     );
   }
 
-  Widget _buildBody(AsyncSnapshot<List<Map>> snapshot) {
+  Widget _buildBody(AsyncSnapshot<List<Timeline>> snapshot) {
     if (snapshot.hasError) return Text('error');
     switch (snapshot.connectionState) {
       case ConnectionState.none:
@@ -52,12 +54,14 @@ class _TimelineListState extends State<TimelineList> {
             itemBuilder: (context, position) {
               final curElement = snapshot.data[position];
               debugPrint('element[$position] = $curElement');
-              final dynamic timestamp = curElement['createdAt'];
-              final dynamic post = curElement['post'];
+              final timestamp = curElement.createdAtAsDateTime;
+              final post = curElement.post;
               debugPrint('post:[$post]');
               return Card(
                   child: ListTile(
-                      title: Text('$post'), subtitle: Text('$timestamp')));
+                title: Text('$post'),
+                subtitle: Text(timestamp),
+              ));
             });
     }
   }
