@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../repository/timeline_repository.dart';
 import '../model/timeline.dart';
+import '../model/post.dart';
+import '../extension/datetime_ext.dart';
 
 class TimelineList extends StatefulWidget {
   @override
@@ -52,17 +54,31 @@ class _TimelineListState extends State<TimelineList> {
         return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (context, position) {
-              final curElement = snapshot.data[position];
-              debugPrint('element[$position] = $curElement');
-              final timestamp = curElement.createdAtAsDateTime;
-              final post = curElement.post;
-              debugPrint('post:[$post]');
-              return Card(
-                  child: ListTile(
-                title: Text('$post'),
-                subtitle: Text(timestamp),
-              ));
+              final timeline = snapshot.data[position];
+              return _buildTimeline(timeline);
             });
     }
+  }
+
+  Widget _buildTimeline(Timeline timeline) {
+    return FutureBuilder<Post>(
+        future: timeline.getPost(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final post = snapshot.data;
+            return Card(
+                child: ListTile(
+                    title: Text(post.name),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(timeline.createdAt.toDateTimeString()),
+                        Text(post.imagePath),
+                      ],
+                    )));
+          } else {
+            return CircularProgressIndicator();
+          }
+        });
   }
 }
