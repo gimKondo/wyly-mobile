@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../repository/timeline_repository.dart';
+import '../service/storage_service.dart';
 import '../model/timeline.dart';
 import '../model/post.dart';
 import '../extension/datetime_ext.dart';
@@ -55,12 +57,12 @@ class _TimelineListState extends State<TimelineList> {
             itemCount: snapshot.data.length,
             itemBuilder: (context, position) {
               final timeline = snapshot.data[position];
-              return _buildTimeline(timeline);
+              return _buildTimelineItem(timeline);
             });
     }
   }
 
-  Widget _buildTimeline(Timeline timeline) {
+  Widget _buildTimelineItem(Timeline timeline) {
     return FutureBuilder<Post>(
         future: timeline.getPost(),
         builder: (context, snapshot) {
@@ -73,12 +75,37 @@ class _TimelineListState extends State<TimelineList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(timeline.createdAt.toDateTimeString()),
-                        Text(post.imagePath),
+                        _buildPostImage(post.imagePath),
                       ],
                     )));
           } else {
             return CircularProgressIndicator();
           }
+        });
+  }
+
+  Widget _buildPostImage(String imagePath) {
+    return FutureBuilder<String>(
+        future: StorageService().getDownloadURL(imagePath),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+          return CachedNetworkImage(
+            imageUrl: snapshot.data,
+            imageBuilder: (context, imageProvider) => Container(
+              height: 100,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+            ),
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(value: downloadProgress.progress),
+            errorWidget: (context, url, dynamic error) => Icon(Icons.error),
+          );
         });
   }
 }
