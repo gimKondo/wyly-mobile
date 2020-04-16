@@ -2,11 +2,10 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-/// Firebase Functions 接続のための共通クラス
+/// Service for Firebase Functions
 class FunctionsService {
   CloudFunctions _cloudFunctions;
 
-  /// コンストラクタ
   FunctionsService(BuildContext context) {
     _cloudFunctions = CloudFunctions(
       app: FirebaseApp.instance,
@@ -14,7 +13,6 @@ class FunctionsService {
     );
   }
 
-  /// Function 呼び出し
   Future<HttpsCallableResult> callFunction(
     String functionName,
     dynamic params,
