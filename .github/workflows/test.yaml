@@ -23,6 +23,7 @@ jobs:
           mention_if: "failure"
           channel: "#wyly-github"
           icon_emoji: "github"
+          username: "Nyanbo-Test"
           url: ${{ secrets.SLACK_WEBHOOK_URL }}
           commit: true
           token: ${{ secrets.GITHUB_TOKEN }}
