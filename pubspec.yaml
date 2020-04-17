@@ -26,6 +26,9 @@ dependencies:
   # Network
   cached_network_image: ^2.1.0
 
+  # UI
+  sticky_infinite_list: ^1.2.3
+
   # Firebase
   firebase_core: ^0.4.4
   firebase_auth: ^0.15.5

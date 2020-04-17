@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // primarySwatch: Colors.blue,
         primaryColor: Color.fromARGB(0xFF, 0x98, 0x4F, 0x2B), // #984F2B
+        cardColor: Color.fromARGB(0xFF, 0xA9, 0x6F, 0x4B), // #A96F4B
       ),
       initialRoute: '/',
       routes: {

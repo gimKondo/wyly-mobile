@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sticky_infinite_list/sticky_infinite_list.dart';
+import 'package:intl/intl.dart';
 
 import '../repository/timeline_repository.dart';
 import '../service/storage_service.dart';
 import '../model/timeline.dart';
 import '../model/post.dart';
-import '../extension/datetime_ext.dart';
 
 class TimelineList extends StatefulWidget {
   @override
@@ -53,12 +54,64 @@ class _TimelineListState extends State<TimelineList> {
       case ConnectionState.waiting:
         return CircularProgressIndicator();
       default:
-        return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, position) {
-              final timeline = snapshot.data[position];
-              return _buildTimelineItem(timeline);
-            });
+        return InfiniteList(
+          maxChildCount: snapshot.data.length,
+          builder: (context, index) {
+            final timeline = snapshot.data[index];
+            return InfiniteListItem(
+              headerAlignment: HeaderAlignment.centerLeft,
+              headerStateBuilder: (context, state) {
+                return Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.orange.withOpacity(1 - state.position),
+                  ),
+                  height: 70,
+                  width: 70,
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        DateFormat.Hm().format(timeline.createdAt),
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        '${timeline.createdAt.day} ${DateFormat.MMM().format(timeline.createdAt)}',
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+              contentBuilder: (context) => Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Theme.of(context).cardColor,
+                ),
+                padding: EdgeInsets.all(8),
+                height: 160,
+                width: 300,
+                margin: EdgeInsets.only(
+                  left: 100,
+                  top: 5,
+                  bottom: 5,
+                  right: 0,
+                ),
+                child: _buildTimelineItem(timeline),
+              ),
+              minOffsetProvider: (state) => 80,
+            );
+          },
+        );
     }
   }
 
@@ -68,16 +121,10 @@ class _TimelineListState extends State<TimelineList> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final post = snapshot.data;
-            return Card(
-                child: ListTile(
-                    title: Text(post.name),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(timeline.createdAt.toDateTimeString()),
-                        _buildPostImage(post.imagePath),
-                      ],
-                    )));
+            return ListTile(
+              title: Text(post.name),
+              subtitle: _buildPostImage(post.imagePath),
+            );
           } else {
             return CircularProgressIndicator();
           }
@@ -99,6 +146,7 @@ class _TimelineListState extends State<TimelineList> {
                 image: DecorationImage(
                   image: imageProvider,
                   fit: BoxFit.fitHeight,
+                  alignment: Alignment.centerLeft,
                 ),
               ),
             ),
