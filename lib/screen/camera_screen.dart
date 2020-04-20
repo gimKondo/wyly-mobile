@@ -7,6 +7,8 @@ import 'package:path_provider/path_provider.dart';
 
 import '../widget/bottom_navigator.dart';
 import '../service/storage_service.dart';
+import '../model/post.dart';
+import '../repository/post_repository.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -134,7 +136,17 @@ class DisplayPictureScreen extends StatelessWidget {
         onPressed: () async {
           // uplaod iamge
           // TODO: error handling
-          await StorageService().uploadFile('posts/$fileName', localFilePath);
+          final storageRef = await StorageService()
+              .uploadFile('posts/$fileName', localFilePath);
+          final storagePath = await storageRef.getPath();
+
+          // create Post document
+          final post = Post(
+            name: 'Unknown',
+            imagePath: storagePath,
+            createdAt: DateTime.now(),
+          );
+          await PostRepository().create(post);
 
           await Navigator.pushNamedAndRemoveUntil(
               context, '/camera', (_) => false);
