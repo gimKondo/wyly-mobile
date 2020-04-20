@@ -6,6 +6,7 @@ import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
 import '../widget/bottom_navigator.dart';
+import '../service/storage_service.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -79,12 +80,14 @@ class CameraScreenState extends State<CameraScreen> {
 
             // Construct the path where the image should be saved using the
             // pattern package.
+            final fileName = DateTime.now().millisecondsSinceEpoch.toString();
             final path = join(
               // Store the picture in the temp directory.
               // Find the temp directory using the `path_provider` plugin.
               (await getTemporaryDirectory()).path,
-              '${DateTime.now()}.png',
+              '$fileName.jpg',
             );
+            debugPrint('local file path. path:[$path]');
 
             // Attempt to take a picture and log where it's been saved.
             await _controller.takePicture(path);
@@ -93,7 +96,10 @@ class CameraScreenState extends State<CameraScreen> {
             await Navigator.push<dynamic>(
               context,
               MaterialPageRoute<dynamic>(
-                builder: (context) => DisplayPictureScreen(imagePath: path),
+                builder: (context) => DisplayPictureScreen(
+                  fileName: fileName,
+                  localFilePath: path,
+                ),
               ),
             );
           } catch (e) {
@@ -108,9 +114,11 @@ class CameraScreenState extends State<CameraScreen> {
 
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
+  final String fileName;
+  final String localFilePath;
 
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
+  const DisplayPictureScreen({Key key, this.fileName, this.localFilePath})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +126,20 @@ class DisplayPictureScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Display the Picture')),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
+      body: Image.file(File(localFilePath)),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.cloud_upload),
+        backgroundColor: Theme.of(context).primaryColor,
+        // Provide an onPressed callback.
+        onPressed: () async {
+          // uplaod iamge
+          // TODO: error handling
+          await StorageService().uploadFile('posts/$fileName', localFilePath);
+
+          await Navigator.pushNamedAndRemoveUntil(
+              context, '/camera', (_) => false);
+        },
+      ),
     );
   }
 }
