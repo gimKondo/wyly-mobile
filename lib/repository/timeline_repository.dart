@@ -16,7 +16,7 @@ class TimelineRepository {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.documents
-            .map((doc) => Timeline.fromMap(doc.data))
+            .map((doc) => Timeline.fromFirestoreData(doc.data))
             .toList());
   }
 }

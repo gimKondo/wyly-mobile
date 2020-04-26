@@ -8,7 +8,7 @@ class Post {
 
   const Post({this.name, this.imagePath, this.createdAt, this.isPublic = true});
 
-  Post.fromMap(Map<String, dynamic> data)
+  Post.fromFirestoreData(Map<String, dynamic> data)
       : this.name = data['name'] as String,
         this.imagePath = data['imagePath'] as String,
         this.createdAt = (data['createdAt'] as Timestamp).toDate(),
