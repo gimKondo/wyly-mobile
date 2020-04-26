@@ -28,4 +28,15 @@ class PostRepository {
             .map((doc) => Post.fromFirestoreData(doc))
             .toList());
   }
+
+  /// publish post
+  Future<void> publish(String documentID) async {
+    return await Firestore.instance
+        .collection('users')
+        .document(AuthService().user.uid)
+        .collection('posts')
+        .document(documentID)
+        // ignore: implicit_dynamic_map_literal
+        .updateData(({'isPublic': true}));
+  }
 }
