@@ -37,6 +37,7 @@ class PreviewPhotoScreen extends StatelessWidget {
             name: 'Unknown',
             imagePath: storagePath,
             createdAt: DateTime.now(),
+            isPublic: false,
           );
           await PostRepository().create(post);
 

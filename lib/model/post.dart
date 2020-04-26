@@ -11,7 +11,7 @@ class Post {
     @required this.name,
     @required this.imagePath,
     @required this.createdAt,
-    this.isPublic = true,
+    @required this.isPublic,
   });
 
   Post.fromFirestoreData(Map<String, dynamic> data)
