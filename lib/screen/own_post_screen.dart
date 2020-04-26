@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:sticky_infinite_list/sticky_infinite_list.dart';
 import 'package:intl/intl.dart';
+import 'package:sticky_infinite_list/sticky_infinite_list.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-import '../repository/timeline_repository.dart';
-import '../service/storage_service.dart';
-import '../model/timeline.dart';
+import '../widget/bottom_navigator.dart';
+import '../repository/post_repository.dart';
 import '../model/post.dart';
+import '../service/storage_service.dart';
 
-class TimelineList extends StatefulWidget {
+class OwnPostScreen extends StatelessWidget {
   @override
-  _TimelineListState createState() => _TimelineListState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Wyly')),
+      body: _PostList(),
+      bottomNavigationBar: BottomNavigator(1),
+    );
+  }
 }
 
-class _TimelineListState extends State<TimelineList> {
-  final _repository = TimelineRepository();
+class _PostList extends StatefulWidget {
+  @override
+  _PostListState createState() => _PostListState();
+}
+
+class _PostListState extends State<_PostList> {
+  final _repository = PostRepository();
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: _repository.list(),
+        stream: _repository.fetchOwnList(),
         builder:
             // ignore: avoid_types_on_closure_parameters
-            (context, AsyncSnapshot<List<Timeline>> timelineSnapshot) {
+            (context, AsyncSnapshot<List<Post>> timelineSnapshot) {
           if (timelineSnapshot.hasError) return Text('error');
           switch (timelineSnapshot.connectionState) {
             case ConnectionState.none:
@@ -35,7 +46,7 @@ class _TimelineListState extends State<TimelineList> {
         });
   }
 
-  Widget _buildBody(AsyncSnapshot<List<Timeline>> snapshot) {
+  Widget _buildBody(AsyncSnapshot<List<Post>> snapshot) {
     if (snapshot.hasError) return Text('error');
     switch (snapshot.connectionState) {
       case ConnectionState.none:
@@ -46,7 +57,7 @@ class _TimelineListState extends State<TimelineList> {
         return InfiniteList(
           maxChildCount: snapshot.data.length,
           builder: (context, index) {
-            final timeline = snapshot.data[index];
+            final post = snapshot.data[index];
             return InfiniteListItem(
               headerAlignment: HeaderAlignment.centerLeft,
               headerStateBuilder: (context, state) {
@@ -64,7 +75,7 @@ class _TimelineListState extends State<TimelineList> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        DateFormat.Hm().format(timeline.createdAt),
+                        DateFormat.Hm().format(post.createdAt),
                         style: TextStyle(
                           fontSize: 17,
                           color: Colors.black87,
@@ -72,7 +83,7 @@ class _TimelineListState extends State<TimelineList> {
                         ),
                       ),
                       Text(
-                        '${timeline.createdAt.day} ${DateFormat.MMM().format(timeline.createdAt)}',
+                        '${post.createdAt.day} ${DateFormat.MMM().format(post.createdAt)}',
                         style: TextStyle(
                           fontSize: 17,
                           color: Colors.black87,
@@ -86,7 +97,9 @@ class _TimelineListState extends State<TimelineList> {
               contentBuilder: (context) => Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).cardColor,
+                  color: post.isPublic
+                      ? Theme.of(context).cardColor
+                      : Theme.of(context).disabledColor,
                 ),
                 padding: EdgeInsets.all(8),
                 height: 160,
@@ -97,7 +110,7 @@ class _TimelineListState extends State<TimelineList> {
                   bottom: 5,
                   right: 0,
                 ),
-                child: _buildTimelineItem(timeline),
+                child: _buildPostItem(post),
               ),
               minOffsetProvider: (state) => 80,
             );
@@ -106,20 +119,21 @@ class _TimelineListState extends State<TimelineList> {
     }
   }
 
-  Widget _buildTimelineItem(Timeline timeline) {
-    return FutureBuilder<Post>(
-        future: timeline.getPost(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final post = snapshot.data;
-            return ListTile(
-              title: Text(post.name),
-              subtitle: _buildPostImage(post.imagePath),
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        });
+  Widget _buildPostItem(Post post) {
+    return ListTile(
+      title: Row(children: _buildPostTitle(post)),
+      subtitle: _buildPostImage(post.imagePath),
+    );
+  }
+
+  List<Widget> _buildPostTitle(Post post) {
+    if (post.isPublic) {
+      return <Widget>[Text(post.name)];
+    }
+    return <Widget>[
+      Icon(Icons.lock),
+      Text(post.name),
+    ];
   }
 
   Widget _buildPostImage(String imagePath) {

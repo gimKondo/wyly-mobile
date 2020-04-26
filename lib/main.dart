@@ -5,7 +5,7 @@ import './screen/splash_screen.dart';
 import './screen/login_screen.dart';
 import './screen/home_screen.dart';
 import './screen/camera_screen.dart';
-import './screen/sample_screen.dart';
+import './screen/own_post_screen.dart';
 
 List<CameraDescription> cameras;
 
@@ -25,15 +25,18 @@ class MyApp extends StatelessWidget {
       title: 'Wyly',
       theme: ThemeData(
         // primarySwatch: Colors.blue,
-        primaryColor: Color.fromARGB(0xFF, 0x98, 0x4F, 0x2B), // #984F2B
-        cardColor: Color.fromARGB(0xFF, 0xA9, 0x6F, 0x4B), // #A96F4B
+        primaryColor: Color.fromARGB(0xFF, 0x52, 0x33, 0x29), // #523329
+        canvasColor: Color.fromARGB(0xFF, 0xC6, 0xCE, 0xD3), // #C6CED3
+        cardColor: Color.fromARGB(0xFF, 0x9C, 0x9C, 0x82), // #9C9C82
+        disabledColor: Color.fromARGB(0xFF, 0x6D, 0x83, 0x9B), // #6D839B
+        accentColor: Color.fromARGB(0xFF, 0x98, 0x4F, 0x2B), // #984F2B
       ),
       initialRoute: '/',
       routes: {
         '/': (context) => SplashScreen(),
         '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
-        '/sample': (context) => SampleScreen(title: 'Sample'),
+        '/posts': (context) => OwnPostScreen(),
         '/camera': (context) => CameraScreen(
               camera: cameras[0],
             ),

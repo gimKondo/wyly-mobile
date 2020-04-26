@@ -17,8 +17,8 @@ class BottomNavigator extends StatelessWidget {
           icon: Icon(Icons.home),
         ),
         BottomNavigationBarItem(
-          title: Text('Sample'),
-          icon: Icon(Icons.watch),
+          title: Text('Post'),
+          icon: Icon(Icons.collections),
         ),
         BottomNavigationBarItem(
           title: Text('Camera'),
@@ -35,7 +35,7 @@ class BottomNavigator extends StatelessWidget {
             Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
             break;
           case 1:
-            _pushNamedAndRemoveUntilHome(context, '/sample');
+            _pushNamedAndRemoveUntilHome(context, '/posts');
             break;
           case 2:
             _pushNamedAndRemoveUntilHome(context, '/camera');

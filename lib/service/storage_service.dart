@@ -16,7 +16,7 @@ class StorageService {
 
   Future<StorageReference> uploadFile(
       String storagePath, String localFilePath) async {
-    final user = await AuthService().getFirebaseUser();
+    final user = AuthService().user;
     final ref =
         FirebaseStorage.instance.ref().child('${user.uid}/$storagePath');
     final uploadTask = ref.putFile(File(localFilePath));

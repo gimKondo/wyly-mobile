@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
@@ -6,9 +7,14 @@ class Post {
   final DateTime createdAt;
   final bool isPublic;
 
-  const Post({this.name, this.imagePath, this.createdAt, this.isPublic = true});
+  const Post({
+    @required this.name,
+    @required this.imagePath,
+    @required this.createdAt,
+    this.isPublic = true,
+  });
 
-  Post.fromMap(Map<String, dynamic> data)
+  Post.fromFirestoreData(Map<String, dynamic> data)
       : this.name = data['name'] as String,
         this.imagePath = data['imagePath'] as String,
         this.createdAt = (data['createdAt'] as Timestamp).toDate(),
