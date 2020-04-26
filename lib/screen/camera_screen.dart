@@ -1,14 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
 import '../widget/bottom_navigator.dart';
-import '../service/storage_service.dart';
-import '../model/post.dart';
-import '../repository/post_repository.dart';
+import './preview_photo_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -98,7 +94,7 @@ class CameraScreenState extends State<CameraScreen> {
             await Navigator.push<dynamic>(
               context,
               MaterialPageRoute<dynamic>(
-                builder: (context) => DisplayPictureScreen(
+                builder: (context) => PreviewPhotoScreen(
                   fileName: fileName,
                   localFilePath: path,
                 ),
@@ -108,48 +104,6 @@ class CameraScreenState extends State<CameraScreen> {
             // If an error occurs, log the error to the console.
             print(e);
           }
-        },
-      ),
-    );
-  }
-}
-
-// A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String fileName;
-  final String localFilePath;
-
-  const DisplayPictureScreen({Key key, this.fileName, this.localFilePath})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(localFilePath)),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.cloud_upload),
-        backgroundColor: Theme.of(context).primaryColor,
-        // Provide an onPressed callback.
-        onPressed: () async {
-          // uplaod iamge
-          // TODO: error handling
-          final storageRef = await StorageService()
-              .uploadFile('posts/$fileName', localFilePath);
-          final storagePath = await storageRef.getPath();
-
-          // create Post document
-          final post = Post(
-            name: 'Unknown',
-            imagePath: storagePath,
-            createdAt: DateTime.now(),
-          );
-          await PostRepository().create(post);
-
-          await Navigator.pushNamedAndRemoveUntil(
-              context, '/camera', (_) => false);
         },
       ),
     );
