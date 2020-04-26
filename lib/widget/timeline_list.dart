@@ -53,7 +53,9 @@ class _TimelineListState extends State<TimelineList> {
                 return Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.orange.withOpacity(1 - state.position),
+                    color: Theme.of(context)
+                        .cardColor
+                        .withOpacity(1 - state.position),
                   ),
                   height: 70,
                   width: 70,
