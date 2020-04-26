@@ -7,7 +7,7 @@ import '../model/timeline.dart';
 /// Repository of Timeline document
 class TimelineRepository {
   /// get timelines stream
-  Future<Stream<List<Timeline>>> list() async {
+  Stream<List<Timeline>> list() {
     return Firestore.instance
         .collection('users')
         .document(AuthService().user.uid)

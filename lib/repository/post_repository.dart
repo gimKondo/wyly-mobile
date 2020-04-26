@@ -16,7 +16,7 @@ class PostRepository {
   }
 
   /// get own posts stream
-  Future<Stream<List<Post>>> fetchOwnList() async {
+  Stream<List<Post>> fetchOwnList() {
     return Firestore.instance
         .collection('users')
         .document(AuthService().user.uid)

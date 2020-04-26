@@ -18,32 +18,21 @@ class _TimelineListState extends State<TimelineList> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _repository.list(),
-      builder:
-          // ignore: avoid_types_on_closure_parameters
-          (context, AsyncSnapshot<Stream<List<Timeline>>> snapshot) {
-        if (snapshot.hasData) {
-          return StreamBuilder(
-              stream: snapshot.data,
-              builder:
-                  // ignore: avoid_types_on_closure_parameters
-                  (context, AsyncSnapshot<List<Timeline>> timelineSnapshot) {
-                if (timelineSnapshot.hasError) return Text('error');
-                switch (timelineSnapshot.connectionState) {
-                  case ConnectionState.none:
-                    return Text('none');
-                  case ConnectionState.waiting:
-                    return CircularProgressIndicator();
-                  default:
-                    return _buildBody(timelineSnapshot);
-                }
-              });
-        } else {
-          return Text('error');
-        }
-      },
-    );
+    return StreamBuilder(
+        stream: _repository.list(),
+        builder:
+            // ignore: avoid_types_on_closure_parameters
+            (context, AsyncSnapshot<List<Timeline>> timelineSnapshot) {
+          if (timelineSnapshot.hasError) return Text('error');
+          switch (timelineSnapshot.connectionState) {
+            case ConnectionState.none:
+              return Text('none');
+            case ConnectionState.waiting:
+              return CircularProgressIndicator();
+            default:
+              return _buildBody(timelineSnapshot);
+          }
+        });
   }
 
   Widget _buildBody(AsyncSnapshot<List<Timeline>> snapshot) {
