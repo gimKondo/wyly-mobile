@@ -25,7 +25,7 @@ class PostRepository {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.documents
-            .map((doc) => Post.fromFirestoreData(doc.data))
+            .map((doc) => Post.fromFirestoreData(doc))
             .toList());
   }
 }

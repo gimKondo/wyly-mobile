@@ -17,7 +17,7 @@ class TimelineRepository {
           .orderBy('createdAt', descending: true)
           .snapshots()
           .map((snapshot) => snapshot.documents
-              .map((doc) => Timeline.fromFirestoreData(doc.data))
+              .map((doc) => Timeline.fromFirestoreData(doc))
               .toList());
     } on Error catch (e) {
       debugPrint('Fail to get timeline stream. err:[$e]');
