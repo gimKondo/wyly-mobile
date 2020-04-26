@@ -8,10 +8,9 @@ import '../model/timeline.dart';
 class TimelineRepository {
   /// get timelines stream
   Future<Stream<List<Timeline>>> list() async {
-    final user = await AuthService().getFirebaseUser();
     return Firestore.instance
         .collection('users')
-        .document(user.uid)
+        .document(AuthService().user.uid)
         .collection('timelines')
         .orderBy('createdAt', descending: true)
         .snapshots()

@@ -1,11 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  factory AuthService() {
+    if (_authService == null) {
+      _authService = AuthService._internal();
+    }
+    return _authService;
+  }
+  AuthService._internal();
+  static AuthService _authService;
 
-  /// Get Firebase user if already sign in
-  Future<FirebaseUser> getFirebaseUser() async {
-    return await FirebaseAuth.instance.currentUser();
+  // initialize on signing in/up
+  FirebaseUser _user;
+
+  FirebaseUser get user => _user;
+
+  /// initialize Firebase user if already sign in
+  Future<FirebaseUser> initializeFirebaseUser() async {
+    _user = await FirebaseAuth.instance.currentUser();
+    return _user;
   }
 
   /// Sign up new user by [email] address and [password]
@@ -15,13 +28,14 @@ class AuthService {
     String password,
   ) async {
     try {
-      final authResult = await _auth.createUserWithEmailAndPassword(
+      final authResult =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final user = authResult.user;
-      print("signed up by ${user.email}");
-      return user;
+      _user = authResult.user;
+      print("signed up by ${_user.email}");
+      return _user;
     } catch (e) {
       print("fail to sign up. err:[$e]");
       rethrow;
@@ -35,13 +49,13 @@ class AuthService {
     String password,
   ) async {
     try {
-      final authResult = await _auth.signInWithEmailAndPassword(
+      final authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final user = authResult.user;
-      print("signed in by ${user.email}");
-      return user;
+      _user = authResult.user;
+      print("signed in by ${_user.email}");
+      return _user;
     } catch (e) {
       print("fail to sign in. err:[$e]");
       rethrow;
@@ -50,6 +64,6 @@ class AuthService {
 
   /// sign out
   Future<void> singOut() async {
-    await _auth.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 }

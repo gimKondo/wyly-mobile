@@ -7,21 +7,19 @@ import '../service/auth_service.dart';
 class PostRepository {
   /// create Post document
   Future<DocumentSnapshot> create(Post post) async {
-    final user = await AuthService().getFirebaseUser();
     final doc = await Firestore.instance
         .collection('users')
-        .document(user.uid)
+        .document(AuthService().user.uid)
         .collection('posts')
         .add(post.toMap());
     return doc.get();
   }
 
   /// get own posts stream
-  Future<Stream<List<Post>>> list() async {
-    final user = await AuthService().getFirebaseUser();
+  Future<Stream<List<Post>>> fetchOwnList() async {
     return Firestore.instance
         .collection('users')
-        .document(user.uid)
+        .document(AuthService().user.uid)
         .collection('posts')
         .orderBy('createdAt', descending: true)
         .snapshots()

@@ -9,7 +9,7 @@ class SplashScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // スプラッシュ画面が見えるよう最低2秒遷移させない
       Future.delayed(Duration(milliseconds: 2000), () async {
-        final user = await AuthService().getFirebaseUser();
+        final user = await AuthService().initializeFirebaseUser();
         if (user != null) {
           await Navigator.of(context)
               .pushNamedAndRemoveUntil('/home', (_) => false);
