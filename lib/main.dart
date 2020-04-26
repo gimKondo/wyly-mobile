@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Wyly',
       theme: ThemeData(
         // primarySwatch: Colors.blue,
-        primaryColor: Color.fromARGB(0xFF, 0x9F, 0x7D, 0x50), // #9F7D50
+        primaryColor: Color.fromARGB(0xFF, 0x52, 0x33, 0x29), // #523329
         canvasColor: Color.fromARGB(0xFF, 0xC6, 0xCE, 0xD3), // #C6CED3
         cardColor: Color.fromARGB(0xFF, 0x9C, 0x9C, 0x82), // #9C9C82
         disabledColor: Color.fromARGB(0xFF, 0x6D, 0x83, 0x9B), // #6D839B
