@@ -64,7 +64,9 @@ class _PostListState extends State<_PostList> {
                 return Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.orange.withOpacity(1 - state.position),
+                    color: Theme.of(context)
+                        .cardColor
+                        .withOpacity(1 - state.position),
                   ),
                   height: 70,
                   width: 70,
@@ -95,7 +97,9 @@ class _PostListState extends State<_PostList> {
               contentBuilder: (context) => Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).cardColor,
+                  color: post.isPublic
+                      ? Theme.of(context).cardColor
+                      : Theme.of(context).disabledColor,
                 ),
                 padding: EdgeInsets.all(8),
                 height: 160,
@@ -117,9 +121,19 @@ class _PostListState extends State<_PostList> {
 
   Widget _buildPostItem(Post post) {
     return ListTile(
-      title: Text(post.name),
+      title: Row(children: _buildPostTitle(post)),
       subtitle: _buildPostImage(post.imagePath),
     );
+  }
+
+  List<Widget> _buildPostTitle(Post post) {
+    if (post.isPublic) {
+      return <Widget>[Text(post.name)];
+    }
+    return <Widget>[
+      Icon(Icons.lock),
+      Text(post.name),
+    ];
   }
 
   Widget _buildPostImage(String imagePath) {
