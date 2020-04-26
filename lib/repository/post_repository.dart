@@ -21,6 +21,7 @@ class PostRepository {
         .collection('users')
         .document(AuthService().user.uid)
         .collection('posts')
+        .orderBy('isPublic', descending: true)
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.documents

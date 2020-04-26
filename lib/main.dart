@@ -5,7 +5,7 @@ import './screen/splash_screen.dart';
 import './screen/login_screen.dart';
 import './screen/home_screen.dart';
 import './screen/camera_screen.dart';
-import './screen/sample_screen.dart';
+import './screen/own_post_screen.dart';
 
 List<CameraDescription> cameras;
 
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => SplashScreen(),
         '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
-        '/sample': (context) => SampleScreen(title: 'Sample'),
+        '/posts': (context) => OwnPostScreen(),
         '/camera': (context) => CameraScreen(
               camera: cameras[0],
             ),
