@@ -73,7 +73,7 @@ class _SampleScreenState extends State<SampleScreen> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
