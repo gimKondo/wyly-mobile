@@ -15,4 +15,18 @@ class PostRepository {
         .add(post.toMap());
     return doc.get();
   }
+
+  /// get own posts stream
+  Future<Stream<List<Post>>> list() async {
+    final user = await AuthService().getFirebaseUser();
+    return Firestore.instance
+        .collection('users')
+        .document(user.uid)
+        .collection('posts')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.documents
+            .map((doc) => Post.fromFirestoreData(doc.data))
+            .toList());
+  }
 }
