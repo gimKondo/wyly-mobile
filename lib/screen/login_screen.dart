@@ -123,7 +123,7 @@ class _LoginFormState extends State<_LoginForm> {
           passwordFormKey: _passwordFormKey,
         ),
         Padding(
-          padding: EdgeInsets.only(top: 10.0),
+          padding: EdgeInsets.only(top: 30.0),
         ),
         Row(
           children: <Widget>[
