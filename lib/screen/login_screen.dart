@@ -223,20 +223,22 @@ class _LoginButtonState extends State<_LoginButton> {
     return Consumer<AuthFieldNotifier>(
       builder: (context, model, child) {
         // validationをパスした場合のみボタンを有効化する
-        return RaisedButton(
-          onPressed: model.isValidAll()
-              ? () => widget._onLoginButtonPressed(context, model)
-              : null, // == null のとき, ボタンは disabled
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(40.0)),
+        return ButtonTheme(
+          minWidth: 200,
+          height: 50,
+          child: RaisedButton(
+            onPressed: model.isValidAll()
+                ? () => widget._onLoginButtonPressed(context, model)
+                : null, // == null のとき, ボタンは disabled
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(40.0)),
+            ),
+            color: Theme.of(context).primaryColor,
+            child: child,
           ),
-          color: Theme.of(context).primaryColor,
-          child: child,
         );
       },
       child: Container(
-        height: 50,
-        width: 200,
         alignment: Alignment.center,
         child: Text(
           'ログイン',

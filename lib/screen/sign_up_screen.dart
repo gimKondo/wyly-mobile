@@ -8,6 +8,7 @@ import '../service/shared_preferences_service.dart';
 import '../notifier/auth_field_notifire.dart';
 import '../widget/email_form.dart';
 import '../widget/password_form.dart';
+import '../widget/standard_button.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -56,68 +57,76 @@ class _SignUpFormState extends State<_SignUpForm> {
       fontWeight: FontWeight.w500,
     );
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Image.asset(
-          'assets/images/logo.png',
-          width: 120,
-          height: 120,
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 30.0),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 10.0),
-          child: EmailForm(
-            formKey: _emailFormKey,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Image.asset(
+            'assets/images/logo.png',
+            width: 120,
+            height: 120,
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10.0),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 10.0),
-          child: PasswordForm(
-            formKey: _passwordFormKey,
+          Padding(
+            padding: EdgeInsets.only(top: 30.0),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10.0),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'IDを保存',
-              style: defaultTextStyle,
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: EmailForm(
+              formKey: _emailFormKey,
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 8.0),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: PasswordForm(
+              formKey: _passwordFormKey,
             ),
-            Consumer<AuthFieldNotifier>(
-              builder: (context, model, child) {
-                return CupertinoSwitch(
-                  onChanged: (value) {
-                    setState(() {
-                      model.canKeepEmail = value;
-                    });
-                  },
-                  value: model.canKeepEmail,
-                  activeColor: Theme.of(context).primaryColor,
-                );
-              },
-            ),
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10.0),
-        ),
-        _SignUpButton(
-          emailFormKey: _emailFormKey,
-          passwordFormKey: _passwordFormKey,
-        ),
-      ],
-    );
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'IDを保存',
+                style: defaultTextStyle,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 8.0),
+              ),
+              Consumer<AuthFieldNotifier>(
+                builder: (context, model, child) {
+                  return CupertinoSwitch(
+                    onChanged: (value) {
+                      setState(() {
+                        model.canKeepEmail = value;
+                      });
+                    },
+                    value: model.canKeepEmail,
+                    activeColor: Theme.of(context).primaryColor,
+                  );
+                },
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+          ),
+          _SignUpButton(
+            emailFormKey: _emailFormKey,
+            passwordFormKey: _passwordFormKey,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+          ),
+          StandardButton(
+            onTap: () async => await Navigator.of(context)
+                .pushNamedAndRemoveUntil('/login', (route) => false),
+            text: 'キャンセル',
+            color: Theme.of(context).disabledColor,
+          ),
+        ]);
   }
 }
 
@@ -195,20 +204,22 @@ class _SignUpButtonState extends State<_SignUpButton> {
     return Consumer<AuthFieldNotifier>(
       builder: (context, model, child) {
         // validationをパスした場合のみボタンを有効化する
-        return RaisedButton(
-          onPressed: model.isValidAll()
-              ? () => widget._onSignUpButtonPressed(context, model)
-              : null, // == null のとき, ボタンは disabled
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(40.0)),
+        return ButtonTheme(
+          minWidth: 200,
+          height: 50,
+          child: RaisedButton(
+            onPressed: model.isValidAll()
+                ? () => widget._onSignUpButtonPressed(context, model)
+                : null, // == null のとき, ボタンは disabled
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(40.0)),
+            ),
+            color: Theme.of(context).primaryColor,
+            child: child,
           ),
-          color: Theme.of(context).primaryColor,
-          child: child,
         );
       },
       child: Container(
-        height: 50,
-        width: 200,
         alignment: Alignment.center,
         child: Text(
           '新規登録',
