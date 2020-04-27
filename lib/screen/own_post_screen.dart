@@ -122,7 +122,8 @@ class _PostListState extends State<_PostList> {
   Widget _buildPostItem(Post post) {
     return ListTile(
       title: Row(children: _buildPostTitle(post)),
-      subtitle: _buildPostImage(post.imagePath),
+      subtitle: _buildPostBody(post),
+      trailing: Container(width: 60, child: _buildPublishButton(post)),
     );
   }
 
@@ -136,9 +137,9 @@ class _PostListState extends State<_PostList> {
     ];
   }
 
-  Widget _buildPostImage(String imagePath) {
+  Widget _buildPostBody(Post post) {
     return FutureBuilder<String>(
-        future: StorageService().getDownloadURL(imagePath),
+        future: StorageService().getDownloadURL(post.imagePath),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
@@ -160,5 +161,24 @@ class _PostListState extends State<_PostList> {
             errorWidget: (context, url, dynamic error) => Icon(Icons.error),
           );
         });
+  }
+
+  Widget _buildPublishButton(Post post) {
+    if (post.isPublic) {
+      return Container();
+    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        RaisedButton(
+          onPressed: () async =>
+              await PostRepository().publish(post.documentId),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(40.0)),
+          ),
+          child: Text('公開'),
+        ),
+      ],
+    );
   }
 }

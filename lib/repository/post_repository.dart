@@ -21,11 +21,22 @@ class PostRepository {
         .collection('users')
         .document(AuthService().user.uid)
         .collection('posts')
-        .orderBy('isPublic', descending: true)
+        .orderBy('isPublic')
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.documents
-            .map((doc) => Post.fromFirestoreData(doc.data))
+            .map((doc) => Post.fromFirestoreData(doc))
             .toList());
+  }
+
+  /// publish post
+  Future<void> publish(String documentID) async {
+    return await Firestore.instance
+        .collection('users')
+        .document(AuthService().user.uid)
+        .collection('posts')
+        .document(documentID)
+        // ignore: implicit_dynamic_map_literal
+        .updateData(({'isPublic': true}));
   }
 }

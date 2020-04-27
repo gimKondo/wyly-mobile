@@ -23,7 +23,6 @@ class PreviewPhotoScreen extends StatelessWidget {
       body: Image.file(File(localFilePath)),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.cloud_upload),
-        backgroundColor: Theme.of(context).primaryColor,
         // Provide an onPressed callback.
         onPressed: () async {
           // uplaod iamge
@@ -37,6 +36,7 @@ class PreviewPhotoScreen extends StatelessWidget {
             name: 'Unknown',
             imagePath: storagePath,
             createdAt: DateTime.now(),
+            isPublic: false,
           );
           await PostRepository().create(post);
 
