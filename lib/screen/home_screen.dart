@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../widget/bottom_navigator.dart';
+import '../popup/search_result_popup.dart';
 import '../service/timeline_service.dart';
+import '../service/ui_service.dart';
+import '../widget/bottom_navigator.dart';
 import '../widget/timeline_list.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,7 +21,16 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void _onPressSearchButton(BuildContext context) {
-    TimelineService().createItem(context);
+  Future<void> _onPressSearchButton(BuildContext context) async {
+    showIndicator(context);
+    try {
+      final post = await TimelineService().createItem(context);
+      Navigator.of(context).pop();
+      await showSearchResultPopup(context, post);
+    } catch (e) {
+      Navigator.of(context).pop();
+      showErrorDialog(context, "Fail to search.\n$e");
+      return;
+    }
   }
 }

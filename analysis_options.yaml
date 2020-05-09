@@ -6,7 +6,8 @@ analyzer:
     - extension-methods
   strong-mode:
     implicit-casts: false
-    implicit-dynamic: false
+    # comment out because analyzer cannot ignore map literal by "ignore: implicit_dynamic_map_literal"
+    # implicit-dynamic: false
 
 linter:
   rules:
