@@ -28,7 +28,9 @@ class Post {
       : this.documentId = null,
         this.name = result.data['name'] as String,
         this.imagePath = result.data['imagePath'] as String,
-        this.createdAt = (result.data['createdAt'] as Timestamp).toDate(),
+        this.createdAt = (Timestamp.fromMillisecondsSinceEpoch(
+                result.data['createdAt'] as int))
+            .toDate(),
         this.isPublic = true;
 
   Map<String, dynamic> toMap() {
