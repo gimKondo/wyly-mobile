@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../widget/bottom_navigator.dart';
+import '../popup/search_result_popup.dart';
 import '../service/timeline_service.dart';
 import '../service/ui_service.dart';
+import '../widget/bottom_navigator.dart';
 import '../widget/timeline_list.dart';
-import './search_result_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -25,12 +25,8 @@ class HomeScreen extends StatelessWidget {
     showIndicator(context);
     try {
       final post = await TimelineService().createItem(context);
-      await Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (context) => SearchResultScreen(post),
-        ),
-      );
+      Navigator.of(context).pop();
+      await showSearchResultPopup(context, post);
     } catch (e) {
       Navigator.of(context).pop();
       showErrorDialog(context, "Fail to search.\n$e");
