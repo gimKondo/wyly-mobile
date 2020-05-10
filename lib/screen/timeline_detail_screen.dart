@@ -31,7 +31,7 @@ class TimelineDetailScreen extends StatelessWidget {
               _buildImage(snapshotPost.data),
               Text(
                 snapshotPost.data.name,
-                style: headlineTextStyle,
+                style: plainTextStyle,
               ),
             ],
           );

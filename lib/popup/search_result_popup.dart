@@ -25,7 +25,7 @@ Future<void> showSearchResultPopup(BuildContext context, Post post) async {
 Widget _buildHeadline(BuildContext context, String text) {
   return Text(
     '「$text」を発見！',
-    style: headlineTextStyle,
+    style: plainTextStyle,
   );
 }
 

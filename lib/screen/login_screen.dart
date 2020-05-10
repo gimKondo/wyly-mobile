@@ -6,6 +6,7 @@ import '../screen/sign_up_screen.dart';
 import '../service/auth_service.dart';
 import '../service/ui_service.dart';
 import '../service/shared_preferences_service.dart';
+import '../style/text_style.dart';
 import '../notifier/auth_field_notifire.dart';
 import '../widget/email_form.dart';
 import '../widget/password_form.dart';
@@ -52,15 +53,6 @@ class _LoginFormState extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTextStyle = TextStyle(
-      fontSize: 20.0,
-      fontWeight: FontWeight.w500,
-    );
-    final linkTextStyle = TextStyle(
-      fontSize: 20.0,
-      fontWeight: FontWeight.w500,
-      color: Colors.blueAccent,
-    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -95,7 +87,7 @@ class _LoginFormState extends State<_LoginForm> {
           children: <Widget>[
             Text(
               'IDを保存',
-              style: defaultTextStyle,
+              style: plainTextStyle,
             ),
             Padding(
               padding: EdgeInsets.only(left: 8.0),
@@ -127,11 +119,11 @@ class _LoginFormState extends State<_LoginForm> {
         ),
         Row(
           children: <Widget>[
-            Text('新規登録は', style: defaultTextStyle),
+            Text('新規登録は', style: plainTextStyle),
             InkWell(
               child: Text(
                 'こちら',
-                style: linkTextStyle,
+                style: linkedPlainTextStyle,
               ),
               onTap: () async {
                 await Navigator.push<dynamic>(
