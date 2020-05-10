@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../model/post.dart';
 import '../service/storage_service.dart';
+import '../style/text_style.dart';
 
 Future<void> showSearchResultPopup(BuildContext context, Post post) async {
   await showDialog(
@@ -22,13 +23,9 @@ Future<void> showSearchResultPopup(BuildContext context, Post post) async {
 }
 
 Widget _buildHeadline(BuildContext context, String text) {
-  final defaultTextStyle = TextStyle(
-    fontSize: 20.0,
-    fontWeight: FontWeight.w500,
-  );
   return Text(
     '「$text」を発見！',
-    style: defaultTextStyle,
+    style: headlineTextStyle,
   );
 }
 

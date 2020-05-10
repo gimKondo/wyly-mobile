@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../model/post.dart';
 import '../model/timeline.dart';
 import '../service/storage_service.dart';
+import '../style/text_style.dart';
 import '../widget/bottom_navigator.dart';
 
 class TimelineDetailScreen extends StatelessWidget {
@@ -25,7 +26,15 @@ class TimelineDetailScreen extends StatelessWidget {
           if (!snapshotPost.hasData) {
             return Text('Now loading...');
           }
-          return _buildImage(snapshotPost.data);
+          return Column(
+            children: [
+              _buildImage(snapshotPost.data),
+              Text(
+                snapshotPost.data.name,
+                style: headlineTextStyle,
+              ),
+            ],
+          );
         });
   }
 
