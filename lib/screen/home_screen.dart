@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
         onPressed: () async => _onPressSearchButton(context),
         tooltip: 'Search',
         child: Icon(Icons.directions_walk),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
       bottomNavigationBar: BottomNavigator(0),
     );
   }
