@@ -7,6 +7,7 @@ import '../repository/timeline_repository.dart';
 import '../service/storage_service.dart';
 import '../model/timeline.dart';
 import '../model/post.dart';
+import '../screen/timeline_detail_screen.dart';
 
 class TimelineList extends StatefulWidget {
   @override
@@ -60,56 +61,71 @@ class _TimelineListState extends State<TimelineList> {
     }
   }
 
+  Future<void> _onTapTimelineItem(Timeline timeline) async {
+    await Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (context) => TimelineDetailScreen(timeline),
+      ),
+    );
+  }
+
   Widget _buildListItemHeader(
       BuildContext context, StickyState state, Timeline timeline) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Theme.of(context).cardColor.withOpacity(1 - state.position),
-      ),
-      height: 70,
-      width: 70,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            DateFormat.Hm().format(timeline.createdAt),
-            style: TextStyle(
-              fontSize: 17,
-              color: Colors.black87,
-              fontWeight: FontWeight.w600,
+    return InkWell(
+      onTap: () => _onTapTimelineItem(timeline),
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Theme.of(context).cardColor.withOpacity(1 - state.position),
+        ),
+        height: 70,
+        width: 70,
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              DateFormat.Hm().format(timeline.createdAt),
+              style: TextStyle(
+                fontSize: 17,
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          Text(
-            '${timeline.createdAt.day} ${DateFormat.MMM().format(timeline.createdAt)}',
-            style: TextStyle(
-              fontSize: 17,
-              color: Colors.black87,
-              fontWeight: FontWeight.w400,
-            ),
-          )
-        ],
+            Text(
+              '${timeline.createdAt.day} ${DateFormat.MMM().format(timeline.createdAt)}',
+              style: TextStyle(
+                fontSize: 17,
+                color: Colors.black87,
+                fontWeight: FontWeight.w400,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildListItemContent(BuildContext context, Timeline timeline) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).cardColor,
+    return InkWell(
+      onTap: () => _onTapTimelineItem(timeline),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).cardColor,
+        ),
+        padding: EdgeInsets.all(8),
+        height: 160,
+        width: 300,
+        margin: EdgeInsets.only(
+          left: 100,
+          top: 5,
+          bottom: 5,
+          right: 0,
+        ),
+        child: _buildTimelineItem(timeline),
       ),
-      padding: EdgeInsets.all(8),
-      height: 160,
-      width: 300,
-      margin: EdgeInsets.only(
-        left: 100,
-        top: 5,
-        bottom: 5,
-        right: 0,
-      ),
-      child: _buildTimelineItem(timeline),
     );
   }
 
