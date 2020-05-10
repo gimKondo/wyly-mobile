@@ -14,7 +14,7 @@ class Timeline {
         this.type = doc.data['type'] as String,
         this.postRef = doc.data['post'] as DocumentReference;
 
-  Future<Post> getPost() async {
+  Future<Post> fetchPost() async {
     final postDoc = await postRef.get();
     return Post.fromFirestoreData(postDoc);
   }

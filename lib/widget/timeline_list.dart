@@ -108,7 +108,7 @@ class _TimelineListState extends State<TimelineList> {
 
   Widget _buildTimelineItem(Timeline timeline) {
     return FutureBuilder<Post>(
-        future: timeline.getPost(),
+        future: timeline.fetchPost(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final post = snapshot.data;
