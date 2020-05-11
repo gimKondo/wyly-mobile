@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   factory AuthService() {
@@ -19,6 +21,39 @@ class AuthService {
   Future<FirebaseUser> initializeFirebaseUser() async {
     _user = await FirebaseAuth.instance.currentUser();
     return _user;
+  }
+
+  /// Sign in/up by Google Account
+  Future<FirebaseUser> signInByGoogle() async {
+    try {
+      final googleSignIn = GoogleSignIn();
+      GoogleSignInAccount googleCurrentUser;
+      // var googleCurrentUser = googleSignIn.currentUser;
+      // if (googleCurrentUser == null) {
+      //   googleCurrentUser = await googleSignIn.signInSilently();
+      // }
+      if (googleCurrentUser == null) {
+        googleCurrentUser = await googleSignIn.signIn();
+      }
+      if (googleCurrentUser == null) {
+        return null;
+      }
+
+      GoogleSignInAuthentication googleAuth =
+          await googleCurrentUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      _user =
+          (await FirebaseAuth.instance.signInWithCredential(credential)).user;
+      debugPrint('signed in ${_user.displayName}');
+
+      return _user;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   /// Sign up new user by [email] address and [password]
@@ -65,5 +100,7 @@ class AuthService {
   /// sign out
   Future<void> singOut() async {
     await FirebaseAuth.instance.signOut();
+    final googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut();
   }
 }

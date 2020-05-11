@@ -62,6 +62,10 @@ class _LoginFormState extends State<_LoginForm> {
           height: 120,
         ),
         Padding(
+          padding: EdgeInsets.only(top: 10.0),
+        ),
+        _GoogleLoginButton(),
+        Padding(
           padding: EdgeInsets.only(top: 30.0),
         ),
         Container(
@@ -138,6 +142,50 @@ class _LoginFormState extends State<_LoginForm> {
         ),
       ],
     );
+  }
+}
+
+class _GoogleLoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      onPressed: () => _onTap(context),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(40.0)),
+      ),
+      color: Theme.of(context).primaryColor,
+      child: Text(
+        'Googleログイン',
+        style: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.w800,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onTap(BuildContext context) async {
+    debugPrint('Google Login');
+
+    // ログイン処理を実行する
+    showIndicator(context);
+    try {
+      await AuthService().signInByGoogle();
+    } on Exception catch (e) {
+      Navigator.of(context).pop();
+      showErrorDialog(context, "Fail to login.\n$e");
+      return;
+    } catch (e) {
+      //  ネットワーク未接続など、APIにアクセス出来ない場合は汎用エラーを出して完了
+      Navigator.of(context).pop();
+      showErrorDialog(context, "login error.\n$e");
+      return;
+    }
+    Navigator.of(context).pop();
+
+    await Navigator.of(context)
+        .pushNamedAndRemoveUntil('/home', (route) => false);
   }
 }
 
