@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import '../screen/sign_up_screen.dart';
 import '../service/auth_service.dart';
@@ -54,7 +55,6 @@ class _LoginFormState extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Image.asset(
           'assets/images/logo.png',
@@ -148,25 +148,15 @@ class _LoginFormState extends State<_LoginForm> {
 class _GoogleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return SignInButton(
+      Buttons.GoogleDark,
+      text: "Sign in with Google",
       onPressed: () => _onTap(context),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(40.0)),
-      ),
-      color: Theme.of(context).primaryColor,
-      child: Text(
-        'Googleログイン',
-        style: TextStyle(
-          fontSize: 20.0,
-          fontWeight: FontWeight.w800,
-          color: Colors.white,
-        ),
-      ),
     );
   }
 
   Future<void> _onTap(BuildContext context) async {
-    debugPrint('Google Login');
+    debugPrint('Sign in with Google');
 
     // ログイン処理を実行する
     showIndicator(context);
