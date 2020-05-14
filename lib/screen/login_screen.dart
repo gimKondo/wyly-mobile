@@ -20,6 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Text('Wyly', style: titleTextStyle),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+              ),
               Image.asset(
                 'assets/images/logo.png',
                 width: 120,
