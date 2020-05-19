@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pedantic/pedantic.dart';
 
 import '../model/post.dart';
+import '../repository/post_repository.dart';
 import '../service/storage_service.dart';
 import '../style/text_style.dart';
 import '../widget/bottom_navigator.dart';
@@ -18,7 +20,7 @@ class OwnPostEditScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('Wyly')),
       body: _buildBody(),
-      bottomNavigationBar: BottomNavigator(0),
+      bottomNavigationBar: BottomNavigator(1),
     );
   }
 
@@ -76,44 +78,44 @@ class _ChangeFormState extends State<_ChangeForm> {
     return Form(
       key: _formKey,
       child: FractionallySizedBox(
-          alignment: Alignment.center,
-          widthFactor: 0.8,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                initialValue: widget.post.name,
-                enabled: true,
-                maxLength: 30,
-                maxLengthEnforced: false,
-                style: plainTextStyle,
-                maxLines: 1,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return '種名を入力してください';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  this._name = value;
-                },
-              ),
-              RaisedButton(
-                onPressed: _submit,
-                child: Text('Update'),
-              )
-            ],
-          )),
+        alignment: Alignment.center,
+        widthFactor: 0.8,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              initialValue: widget.post.name,
+              enabled: true,
+              maxLength: 30,
+              maxLengthEnforced: false,
+              style: plainTextStyle,
+              maxLines: 1,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return '種名を入力してください';
+                }
+                return null;
+              },
+              onSaved: (value) => _name = value,
+            ),
+            RaisedButton(
+              onPressed: _submit,
+              child: Text('Update'),
+            )
+          ],
+        ),
+      ),
     );
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      Fluttertoast.showToast(
-        msg: 'Update Data',
+      await PostRepository().rename(widget.post.documentId, _name);
+      unawaited(Fluttertoast.showToast(
+        msg: 'Updated name',
         gravity: ToastGravity.CENTER,
-      );
-      debugPrint(this._name);
+      ));
+      debugPrint('updated name:[$_name]');
     }
   }
 }
