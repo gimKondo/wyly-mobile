@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sticky_infinite_list/sticky_infinite_list.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import './own_post_edit_screen.dart';
 import '../repository/post_repository.dart';
 import '../model/post.dart';
 import '../service/storage_service.dart';
@@ -62,10 +62,7 @@ class _PostListState extends State<_PostList> {
             return InfiniteListItem(
               headerAlignment: HeaderAlignment.centerLeft,
               headerStateBuilder: (context, state) {
-                return ListHeaderDatetime(
-                  datetime: post.createdAt,
-                  position: state.position,
-                );
+                return _buildListItemHeader(context, state, post);
               },
               contentBuilder: (context) => Container(
                 decoration: BoxDecoration(
@@ -92,11 +89,25 @@ class _PostListState extends State<_PostList> {
     }
   }
 
+  Widget _buildListItemHeader(
+      BuildContext context, StickyState state, Post post) {
+    return InkWell(
+      onTap: () => _onTapPostItem(post),
+      child: ListHeaderDatetime(
+        datetime: post.createdAt,
+        position: state.position,
+      ),
+    );
+  }
+
   Widget _buildPostItem(Post post) {
-    return ListTile(
-      title: Row(children: _buildPostTitle(post)),
-      subtitle: _buildPostBody(post),
-      trailing: Container(width: 60, child: _buildPublishButton(post)),
+    return InkWell(
+      onTap: () => _onTapPostItem(post),
+      child: ListTile(
+        title: Row(children: _buildPostTitle(post)),
+        subtitle: _buildPostBody(post),
+        trailing: Container(width: 60, child: _buildPublishButton(post)),
+      ),
     );
   }
 
@@ -152,6 +163,15 @@ class _PostListState extends State<_PostList> {
           child: Text('公開'),
         ),
       ],
+    );
+  }
+
+  Future<void> _onTapPostItem(Post post) async {
+    await Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (context) => OwnPostEditScreen(post),
+      ),
     );
   }
 }
