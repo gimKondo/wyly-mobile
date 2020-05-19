@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sticky_infinite_list/sticky_infinite_list.dart';
-import 'package:intl/intl.dart';
 
 import '../repository/timeline_repository.dart';
 import '../service/storage_service.dart';
 import '../model/timeline.dart';
 import '../model/post.dart';
 import '../screen/timeline_detail_screen.dart';
+import '../widget/list_header_datetime.dart';
 
 class TimelineList extends StatefulWidget {
   @override
@@ -74,35 +74,9 @@ class _TimelineListState extends State<TimelineList> {
       BuildContext context, StickyState state, Timeline timeline) {
     return InkWell(
       onTap: () => _onTapTimelineItem(timeline),
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Theme.of(context).cardColor.withOpacity(1 - state.position),
-        ),
-        height: 70,
-        width: 70,
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              DateFormat.Hm().format(timeline.createdAt),
-              style: TextStyle(
-                fontSize: 17,
-                color: Colors.black87,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Text(
-              '${timeline.createdAt.day} ${DateFormat.MMM().format(timeline.createdAt)}',
-              style: TextStyle(
-                fontSize: 17,
-                color: Colors.black87,
-                fontWeight: FontWeight.w400,
-              ),
-            )
-          ],
-        ),
+      child: ListHeaderDatetime(
+        datetime: timeline.createdAt,
+        position: state.position,
       ),
     );
   }
