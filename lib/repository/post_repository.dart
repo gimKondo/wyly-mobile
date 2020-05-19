@@ -31,12 +31,23 @@ class PostRepository {
 
   /// publish post
   Future<void> publish(String documentID) async {
-    return await Firestore.instance
+    return _referDoc(documentID)
+        // ignore: implicit_dynamic_map_literal
+        .updateData(({'isPublic': true}));
+  }
+
+  /// rename post
+  Future<void> rename(String documentID, String name) async {
+    return _referDoc(documentID)
+        // ignore: implicit_dynamic_map_literal
+        .updateData(({'name': name}));
+  }
+
+  DocumentReference _referDoc(String documentID) {
+    return Firestore.instance
         .collection('users')
         .document(AuthService().user.uid)
         .collection('posts')
-        .document(documentID)
-        // ignore: implicit_dynamic_map_literal
-        .updateData(({'isPublic': true}));
+        .document(documentID);
   }
 }
