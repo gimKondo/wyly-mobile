@@ -8,7 +8,7 @@ import '../repository/post_repository.dart';
 import '../model/post.dart';
 import '../service/storage_service.dart';
 
-class OwnPostScreen extends StatelessWidget {
+class OwnPostListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
