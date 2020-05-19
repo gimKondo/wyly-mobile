@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../model/post.dart';
 import '../service/storage_service.dart';
@@ -108,8 +109,10 @@ class _ChangeFormState extends State<_ChangeForm> {
   void _submit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text('Updating Data')));
+      Fluttertoast.showToast(
+        msg: 'Update Data',
+        gravity: ToastGravity.CENTER,
+      );
       debugPrint(this._name);
     }
   }
