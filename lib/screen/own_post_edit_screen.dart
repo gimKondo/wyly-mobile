@@ -8,10 +8,13 @@ import '../widget/bottom_navigator.dart';
 
 class OwnPostEditScreen extends StatelessWidget {
   final Post post;
+
   OwnPostEditScreen(this.post);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('Wyly')),
       body: _buildBody(),
       bottomNavigationBar: BottomNavigator(0),
@@ -22,10 +25,7 @@ class OwnPostEditScreen extends StatelessWidget {
     return Column(
       children: [
         _buildImage(post),
-        Text(
-          post.name,
-          style: plainTextStyle,
-        ),
+        _ChangeForm(post: post),
       ],
     );
   }
@@ -54,5 +54,63 @@ class OwnPostEditScreen extends StatelessWidget {
             errorWidget: (context, url, dynamic error) => Icon(Icons.error),
           );
         });
+  }
+}
+
+class _ChangeForm extends StatefulWidget {
+  final Post post;
+
+  _ChangeForm({this.post});
+
+  @override
+  _ChangeFormState createState() => _ChangeFormState();
+}
+
+class _ChangeFormState extends State<_ChangeForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  String _name = '';
+
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: FractionallySizedBox(
+          alignment: Alignment.center,
+          widthFactor: 0.8,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                initialValue: widget.post.name,
+                enabled: true,
+                maxLength: 30,
+                maxLengthEnforced: false,
+                style: plainTextStyle,
+                maxLines: 1,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return '種名を入力してください';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  this._name = value;
+                },
+              ),
+              RaisedButton(
+                onPressed: _submit,
+                child: Text('Update'),
+              )
+            ],
+          )),
+    );
+  }
+
+  void _submit() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text('Updating Data')));
+      debugPrint(this._name);
+    }
   }
 }
