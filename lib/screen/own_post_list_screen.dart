@@ -3,10 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:sticky_infinite_list/sticky_infinite_list.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import '../widget/bottom_navigator.dart';
 import '../repository/post_repository.dart';
 import '../model/post.dart';
 import '../service/storage_service.dart';
+import '../widget/bottom_navigator.dart';
+import '../widget/list_header_datetime.dart';
 
 class OwnPostListScreen extends StatelessWidget {
   @override
@@ -61,37 +62,9 @@ class _PostListState extends State<_PostList> {
             return InfiniteListItem(
               headerAlignment: HeaderAlignment.centerLeft,
               headerStateBuilder: (context, state) {
-                return Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context)
-                        .cardColor
-                        .withOpacity(1 - state.position),
-                  ),
-                  height: 70,
-                  width: 70,
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        DateFormat.Hm().format(post.createdAt),
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        '${post.createdAt.day} ${DateFormat.MMM().format(post.createdAt)}',
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    ],
-                  ),
+                return ListHeaderDatetime(
+                  datetime: post.createdAt,
+                  position: state.position,
                 );
               },
               contentBuilder: (context) => Container(
