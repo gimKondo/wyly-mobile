@@ -18,20 +18,20 @@ class Post {
   });
 
   Post.fromFirestoreData(DocumentSnapshot doc)
-      : this.documentId = doc.documentID,
-        this.name = doc.data['name'] as String,
-        this.imagePath = doc.data['imagePath'] as String,
-        this.createdAt = (doc.data['createdAt'] as Timestamp).toDate(),
-        this.isPublic = doc.data['isPublic'] as bool;
+      : documentId = doc.documentID,
+        name = doc.data['name'] as String,
+        imagePath = doc.data['imagePath'] as String,
+        createdAt = (doc.data['createdAt'] as Timestamp).toDate(),
+        isPublic = doc.data['isPublic'] as bool;
 
   Post.fromSearchResult(HttpsCallableResult result)
-      : this.documentId = null,
-        this.name = result.data['name'] as String,
-        this.imagePath = result.data['imagePath'] as String,
-        this.createdAt = (Timestamp.fromMillisecondsSinceEpoch(
+      : documentId = null,
+        name = result.data['name'] as String,
+        imagePath = result.data['imagePath'] as String,
+        createdAt = (Timestamp.fromMillisecondsSinceEpoch(
                 result.data['createdAt'] as int))
             .toDate(),
-        this.isPublic = true;
+        isPublic = true;
 
   Map<String, dynamic> toMap() {
     // ignore: implicit_dynamic_map_literal

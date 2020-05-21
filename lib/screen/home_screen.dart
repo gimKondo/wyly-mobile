@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
       await showSearchResultPopup(context, post);
     } catch (e) {
       Navigator.of(context).pop();
-      showErrorDialog(context, "Fail to search.\n$e");
+      showErrorDialog(context, 'Fail to search.\n$e');
       return;
     }
   }

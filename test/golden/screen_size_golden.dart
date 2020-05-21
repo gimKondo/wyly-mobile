@@ -7,8 +7,8 @@ extension SetScreenSize on WidgetTester {
       double height = 960,
       double pixelDensity = 1}) async {
     final size = Size(width, height);
-    await this.binding.setSurfaceSize(size);
-    this.binding.window.physicalSizeTestValue = size;
-    this.binding.window.devicePixelRatioTestValue = pixelDensity;
+    await binding.setSurfaceSize(size);
+    binding.window.physicalSizeTestValue = size;
+    binding.window.devicePixelRatioTestValue = pixelDensity;
   }
 }
