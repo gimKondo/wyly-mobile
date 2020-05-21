@@ -17,7 +17,7 @@ jobs:
         run: cp ./.github/config/google-services-dev.json ./android/app/google-services.json
       - uses: subosito/flutter-action@v1.1.1
         with:
-          flutter-version: "1.12.13+hotfix.5"
+          flutter-version: "1.17.1"
       - run: flutter pub get
       - run: flutter test
       - run: flutter build apk --debug -t lib/main.dart --build-name="latest build $(date +'%Y-%m-%d %H:%M')"
