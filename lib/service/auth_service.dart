@@ -4,9 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   factory AuthService() {
-    if (_authService == null) {
-      _authService = AuthService._internal();
-    }
+    _authService ??= AuthService._internal();
     return _authService;
   }
   AuthService._internal();
@@ -32,16 +30,13 @@ class AuthService {
       // if (googleCurrentUser == null) {
       //   googleCurrentUser = await googleSignIn.signInSilently();
       // }
-      if (googleCurrentUser == null) {
-        googleCurrentUser = await googleSignIn.signIn();
-      }
+      googleCurrentUser ??= await googleSignIn.signIn();
       if (googleCurrentUser == null) {
         return null;
       }
 
-      GoogleSignInAuthentication googleAuth =
-          await googleCurrentUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
+      final googleAuth = await googleCurrentUser.authentication;
+      final credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
@@ -69,10 +64,10 @@ class AuthService {
         password: password,
       );
       _user = authResult.user;
-      print("signed up by ${_user.email}");
+      print('signed up by ${_user.email}');
       return _user;
     } catch (e) {
-      print("fail to sign up. err:[$e]");
+      print('fail to sign up. err:[$e]');
       rethrow;
     }
   }
@@ -89,10 +84,10 @@ class AuthService {
         password: password,
       );
       _user = authResult.user;
-      print("signed in by ${_user.email}");
+      print('signed in by ${_user.email}');
       return _user;
     } catch (e) {
-      print("fail to sign in. err:[$e]");
+      print('fail to sign in. err:[$e]');
       rethrow;
     }
   }

@@ -46,7 +46,7 @@ class _GoogleLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SignInButton(
       Buttons.GoogleDark,
-      text: "Sign in with Google",
+      text: 'Sign in with Google',
       onPressed: () => _onTap(context),
     );
   }
@@ -60,12 +60,12 @@ class _GoogleLoginButton extends StatelessWidget {
       await AuthService().signInByGoogle();
     } on Exception catch (e) {
       Navigator.of(context).pop();
-      showErrorDialog(context, "Fail to login.\n$e");
+      showErrorDialog(context, 'Fail to login.\n$e');
       return;
     } catch (e) {
       //  ネットワーク未接続など、APIにアクセス出来ない場合は汎用エラーを出して完了
       Navigator.of(context).pop();
-      showErrorDialog(context, "login error.\n$e");
+      showErrorDialog(context, 'login error.\n$e');
       return;
     }
     Navigator.of(context).pop();
