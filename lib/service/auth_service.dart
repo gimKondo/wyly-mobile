@@ -51,47 +51,6 @@ class AuthService {
     }
   }
 
-  /// Sign up new user by [email] address and [password]
-  /// if fail to sign up, throw PlatformException
-  Future<FirebaseUser> signUpByEmailAndPass(
-    String email,
-    String password,
-  ) async {
-    try {
-      final authResult =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      _user = authResult.user;
-      print('signed up by ${_user.email}');
-      return _user;
-    } catch (e) {
-      print('fail to sign up. err:[$e]');
-      rethrow;
-    }
-  }
-
-  /// Sign in by [email] address and [password]
-  /// if fail to login, throw PlatformException
-  Future<FirebaseUser> signInByEmailAndPass(
-    String email,
-    String password,
-  ) async {
-    try {
-      final authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      _user = authResult.user;
-      print('signed in by ${_user.email}');
-      return _user;
-    } catch (e) {
-      print('fail to sign in. err:[$e]');
-      rethrow;
-    }
-  }
-
   /// sign out
   Future<void> singOut() async {
     await FirebaseAuth.instance.signOut();
