@@ -8,12 +8,14 @@ import '../model/post.dart';
 import '../service/storage_service.dart';
 import '../widget/bottom_navigator.dart';
 import '../widget/list_header_datetime.dart';
+import '../widget/app_bar_title.dart';
+import '../style/text_style.dart';
 
 class OwnPostListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Wyly')),
+      appBar: AppBar(title: AppBarTitle()),
       body: _PostList(),
       bottomNavigationBar: BottomNavigator(1),
     );
@@ -42,6 +44,11 @@ class _PostListState extends State<_PostList> {
             case ConnectionState.waiting:
               return CircularProgressIndicator();
             default:
+              if (timelineSnapshot.data.isEmpty) {
+                return Center(
+                  child: Text('No posts', style: plainTextStyle),
+                );
+              }
               return _buildBody(timelineSnapshot);
           }
         });
