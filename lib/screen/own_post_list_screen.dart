@@ -8,6 +8,7 @@ import '../model/post.dart';
 import '../service/storage_service.dart';
 import '../widget/bottom_navigator.dart';
 import '../widget/list_header_datetime.dart';
+import '../style/text_style.dart';
 
 class OwnPostListScreen extends StatelessWidget {
   @override
@@ -42,6 +43,11 @@ class _PostListState extends State<_PostList> {
             case ConnectionState.waiting:
               return CircularProgressIndicator();
             default:
+              if (timelineSnapshot.data.isEmpty) {
+                return Center(
+                  child: Text('No posts', style: plainTextStyle),
+                );
+              }
               return _buildBody(timelineSnapshot);
           }
         });
