@@ -8,13 +8,14 @@ import '../model/post.dart';
 import '../service/storage_service.dart';
 import '../widget/bottom_navigator.dart';
 import '../widget/list_header_datetime.dart';
+import '../widget/app_bar_title.dart';
 import '../style/text_style.dart';
 
 class OwnPostListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Wyly')),
+      appBar: AppBar(title: AppBarTitle()),
       body: _PostList(),
       bottomNavigationBar: BottomNavigator(1),
     );
