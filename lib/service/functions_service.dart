@@ -2,6 +2,8 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'package:wyly/config.dart';
+
 /// Service for Firebase Functions
 class FunctionsService {
   CloudFunctions _cloudFunctions;
@@ -9,7 +11,7 @@ class FunctionsService {
   FunctionsService(BuildContext context) {
     _cloudFunctions = CloudFunctions(
       app: FirebaseApp.instance,
-      region: 'asia-northeast1', // TODO: set region by config
+      region: Config.of(context).cloudFunctionRegion,
     );
   }
 
