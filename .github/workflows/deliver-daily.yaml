@@ -20,7 +20,7 @@ jobs:
           flutter-version: "1.17.1"
       - run: flutter pub get
       - run: flutter test
-      - run: flutter build apk --debug -t lib/main.dart --build-name="latest build $(date +'%Y-%m-%d %H:%M')"
+      - run: flutter build apk --debug -t lib/env/dev/main.dart --build-name="daily build $(date +'%Y-%m-%d %H:%M:%S')"
       - name: Deploy to DeployGate
         run: ./.github/scripts/deploy-android.sh
         env:
