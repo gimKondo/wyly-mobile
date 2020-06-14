@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
+import 'package:wyly/style/text_style.dart';
+
 class StandardButton extends StatelessWidget {
   final Function() onTap;
   final String text;
@@ -27,11 +29,7 @@ class StandardButton extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             text,
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w800,
-              color: Colors.white,
-            ),
+            style: buttonTextStyle,
           ),
         ),
       ),
