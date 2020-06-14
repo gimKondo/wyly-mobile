@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:wyly/style/text_style.dart';
+
 class ListHeaderDatetime extends StatelessWidget {
   final DateTime datetime;
   final double position;
@@ -25,19 +27,11 @@ class ListHeaderDatetime extends StatelessWidget {
         children: <Widget>[
           Text(
             DateFormat.Hm().format(datetime),
-            style: TextStyle(
-              fontSize: 17,
-              color: Colors.black87,
-              fontWeight: FontWeight.w600,
-            ),
+            style: subPlainTextStyle,
           ),
           Text(
             '${datetime.day} ${DateFormat.MMM().format(datetime)}',
-            style: TextStyle(
-              fontSize: 17,
-              color: Colors.black87,
-              fontWeight: FontWeight.w400,
-            ),
+            style: subPlainTextStyle,
           )
         ],
       ),
