@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 
 import 'package:wyly/app_root.dart';
-// import 'package:wyly/env/dev/config.dart' show config;
-// import 'package:wyly/constants.dart';
+import 'package:wyly/config.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +12,9 @@ Future<void> main() async {
   ]);
   final cameras = await availableCameras();
 
-  // runApp(Constants(config: config, child: AppRoot(config)));
-  runApp(AppRoot(cameras));
+  runApp(Config(
+    AppRoot(cameras),
+    isDebug: true,
+    cloudFunctionRegion: 'asia-northeast1',
+  ));
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 import 'package:wyly/style/color.dart';
+import 'package:wyly/config.dart';
 import './screen/splash_screen.dart';
 import './screen/login_screen.dart';
 import './screen/home_screen.dart';
@@ -16,7 +17,7 @@ class AppRoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Wyly',
+      title: Config.of(context).appTitle,
       theme: ThemeData(
         primaryColor: primaryColor,
         canvasColor: canvasColor,
