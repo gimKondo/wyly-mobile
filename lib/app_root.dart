@@ -8,17 +8,10 @@ import './screen/home_screen.dart';
 import './screen/camera_screen.dart';
 import './screen/own_post_list_screen.dart';
 
-List<CameraDescription> cameras;
+class AppRoot extends StatelessWidget {
+  AppRoot(this.cameras);
+  final List<CameraDescription> cameras;
 
-Future<void> main() async {
-  // Ensure that plugin services are initialized so that `availableCameras()`
-  // can be called before `runApp()`
-  WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
