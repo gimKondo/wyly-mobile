@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-import '../service/auth_service.dart';
-import '../service/ui_service.dart';
-import '../style/text_style.dart';
+import 'package:wyly/popup/common_popup.dart';
+import 'package:wyly/service/auth_service.dart';
+import 'package:wyly/style/text_style.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

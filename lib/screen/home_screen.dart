@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../popup/search_result_popup.dart';
-import '../service/timeline_service.dart';
-import '../service/ui_service.dart';
-import '../widget/bottom_navigator.dart';
-import '../widget/timeline_list.dart';
+import 'package:wyly/popup/common_popup.dart';
+import 'package:wyly/popup/search_result_popup.dart';
+import 'package:wyly/service/timeline_service.dart';
+import 'package:wyly/widget/bottom_navigator.dart';
+import 'package:wyly/widget/timeline_list.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
